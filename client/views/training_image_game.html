@@ -1,0 +1,43 @@
+<template name="training_image_game">
+	<div id="welcome-instruction" class="instruction">
+		<h2>Image Task Training Round <span id="round-number">{{roundNum}}</span></h2>
+		<div id="imageArea">
+			<div id="imageAreaLeft">
+				<img src={{taskImageLeft}} id="pair-image">
+			</div>
+			<div id="imageAreaRight">
+				<img src={{taskImageRight}} id="pair-image">
+			</div>
+		</div>
+
+		<h3 id="task-question">Do the two images above contain members from the same species?</h3>
+		<p><br>Recall that... &lt;explanation of bonus payment system&gt;. Below you can see a history of your
+      previous choices, your peers' choices, and your simulated bonuses for those rounds. Note that the first
+      training round will not have any history data.<br></p>
+	</div>
+	<div id="history">
+    <table id="history-table">
+      <tr>
+        <th>Round</th>
+        <th>Your Claim</th>
+        <th>Others' Claims</th>
+        <th>Bonus</th>
+				<th>Alt. Bonus</th>
+				<th>Error Rate</th>
+      </tr>
+    </table>
+    <h4>Choose an answer to report:</h4>
+  </div>
+	<div id="answerArea">
+    <div id="answerAreaLeft">
+      <button type="button" class="btn" id="submit-yes">Yes</button>
+    </div>
+    <div id="answerAreaRight">
+      <button type="button" class="btn" id="submit-no">No</button>
+    </div>
+  </div>
+	<div id="buttonArea">
+		<a href="" class="btn" style="visibility: hidden;" id="welcome-btn">Next Round</a>
+		<a href="" class="btn" style="visibility: hidden;" id="next-btn">Done, onto real tasks</a>
+	</div>
+</template>

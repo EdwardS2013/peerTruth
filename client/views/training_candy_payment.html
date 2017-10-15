@@ -1,0 +1,34 @@
+<template name="training_candy_payment">
+  <div id="welcome-instruction" class="instruction">
+		<h1>Simulated Candy Round Payment</h1>
+    <p>Recall that... &lt;explanation of bonus payment system&gt;. Below you can see a history of your
+      previous choices, your peers' choices, and your simulated bonuses for those rounds. Note that the first
+      training round will not have any history data.<br></p>
+	</div>
+  <div id="history">
+    <table id="history-table">
+      <tr>
+        <th>Round</th>
+        <th>Your Candy</th>
+        <th>Your Claim</th>
+        <th>Others' Claims</th>
+        <th>Bonus</th>
+        <th>Alt. Bonus</th>
+        <th>Error Rate</th>
+      </tr>
+    </table>
+    <h4>Choose a candy to report:</h4>
+  </div>
+  <div id="answerArea">
+    <div id="answerAreaLeft">
+      <button type="button" class="btn" id="submit-mm">I got a M&M</button>
+    </div>
+    <div id="answerAreaRight">
+      <button type="button" class="btn" id="submit-gm">I got a gummy bear</button>
+    </div>
+  </div>
+  <div id="buttonArea">
+		<a href="" class="btn" style="visibility: hidden;" id="welcome-btn">Next round</a>
+    <a href="" class="btn" style="visibility: hidden;" id="next-btn">Done, onto image training</a>
+	</div>
+</template>
