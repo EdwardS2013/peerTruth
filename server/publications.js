@@ -14,3 +14,15 @@ Meteor.publish('workers',function(){
 Meteor.publish('realTasks', function(){
 	return RealTasks.find();
 });
+
+Meteor.publish('candyTestData', function(){
+	return CandyTestData.find();
+});
+
+Meteor.publish('imageTestData', function(){
+	return ImageTestData.find();
+});
+
+Meteor.publish('errorRates', function(){
+	return ErrorRates.find();
+});

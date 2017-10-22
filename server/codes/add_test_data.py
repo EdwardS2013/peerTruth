@@ -2,16 +2,38 @@ from pymongo import MongoClient
 
 client = MongoClient('127.0.0.1', 3001)
 db = client['meteor']
-data = db['testData']
+candy = db['candyTestData']
+image = db['imageTestData']
 
-f = open('test_data.csv', 'r')
+a = open('candy_test_data.csv', 'r')
+b = open('image_test_data.csv', 'r')
 
-data.delete_many({})
-for line in f:
+candy.delete_many({})
+image.delete_many({})
+for line in a:
     agents = line.rstrip().strip('[]').split(', ')
     pair = agents[0]
-    reports = agents[1:]
-    data.insert_one({"pairNum":pair,
-                    "reports":reports})
+    truth = agents[1]
+    reports = agents[2:-2]
+    pay_0 = agents[-2]
+    pay_1 = agents[-1]
+    candy.insert_one({"pairNum": pair,
+                        "truth": truth,
+                        "reports": reports,
+                        "pay_0": pay_0,
+                        "pay_1": pay_1})
+a.close()
 
-f.close()
+for line in b:
+    agents = line.rstrip().strip('[]').split(', ')
+    pair = agents[0]
+    truth = agents[1]
+    reports = agents[2:-2]
+    pay_0 = agents[-2]
+    pay_1 = agents[-1]
+    image.insert_one({"pairNum": pair,
+                        "truth": truth,
+                        "reports": reports,
+                        "pay_0": pay_0,
+                        "pay_1": pay_1})
+b.close()

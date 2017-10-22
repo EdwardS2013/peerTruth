@@ -1,9 +1,11 @@
 Meteor.subscribe('workers');
 Meteor.subscribe('realTasks');
-Meteor.subscribe('testData');
+Meteor.subscribe('imageTestData');
+Meteor.subscribe('errorRates');
 
-var tasks, data, worker, p0Err, p1Err;
+var tasks, imageData, errorRates, worker;
 const P0_VAL = 0.7;
+const NUM_REFS = 2;
 
 function pressedAnswer() {
 	var btns = document.getElementById('answerArea');
@@ -75,7 +77,18 @@ function updateTable() {
       cellYourClaim.innerHTML = 'No';
     }
 
-    cellOtherClaims.innerHTML = 'Yes' + ', ' + 'No';
+		for(var i = 0; i < round.references.length; i++) {
+			if(round.references[i]) {
+				cellOtherClaims.innerHTML += 'Yes';
+			} else {
+				cellOtherClaims.innerHTML += 'No';
+			}
+
+			if(i < round.references.length-1) {
+				cellOtherClaims.innerHTML += ', ';
+			}
+		}
+
     cellBonus.innerHTML = "$" + round.bonus;
     cellAltBonus.innerHTML = "$" + round.altBonus;
     cellErrorRate.innerHTML = round.errorRate;
@@ -84,68 +97,31 @@ function updateTable() {
 	});
 }
 
-function generateErrors(){
-
-	$.ajax({
-		type: 'POST',
-		data: { P0: P0_VAL, filename:'test_data.csv' },
-		url: 'http://127.0.0.1:5000/error_rate',
-
-		success: function(response) {
-			var args = response.split(' ');
-			console.log('ajax, errs: ' + response);
-			p0Err = args[0];
-			p1Err = args[1];
-		},
-		error: function(response) {
-			return console.error(response);
-		}
-	});
-	/*
-	var p0 = P0_VAL;
-	var p1 = 1-p0;
-	var cnt = 0;
-
-	var p1a, p2a, p3a = [];
-
-	console.log(data.fetch());
-	*/
-}
-
-function generatePayment(answer, pairNum, p0Err, p1Err){
-	$.ajax({
-		type: 'POST',
-		data: { ans: answer, pair: pairNum, p0_est: p0Err, p1_est: p1Err, p0: P0_VAL },
-		url: 'http://127.0.0.1:5000/payment',
-
-		success: function(response) {
-			console.log('ajax, pay: ' + response);
-			return parseFloat(response);
-		},
-		error: function(response) {
-			return console.error(response);
-		}
-	});
-}
-
-function addAnswer(answer){
+function addAnswer(answer) {
 	var payment, altChoice, altPayment, errorRate;
+	var references = [];
+	var report = imageData.fetch()[Template.instance().taskNum.get()];
+	console.log(Template.instance().taskNum.get());
 	if(answer) {
-		//yes
-		errorRate = parseFloat(p0Err);
+		//1 yes, members of different species
+		errorRate = errorRates[1];
 		altChoice = 'No';
-
-		payment = generatePayment(answer, Template.instance().taskNum.get()+1, p0Err, p1Err);
-		setTimeout(function(){
-			console.log(payment);
-		}, 500);
-		altPayment = 0.25;
+		payment = report.pay_1;
+		altPayment = report.pay_0;
 	} else {
-		errorRate = parseFloat(p1Err);
+		//0
+		errorRate = errorRates[0];
 		altChoice = 'Yes';
-		payment = 0.25;
-		altPayment = 0.5;
+		payment = report.pay_0;
+		altPayment = report.pay_1;
 	}
+
+	for (i = 0; i < NUM_REFS; i++) {
+    references.push(parseInt(report.reports[Math.floor(Math.random()*report.reports.length)]));
+	}
+
+	console.log(references);
+
 	var btns = document.getElementById('answerArea');
 	var wrapper = document.createElement('H4');
   var paymentText = document.createTextNode('Your bonus payment would have been: $' + payment);
@@ -160,8 +136,8 @@ function addAnswer(answer){
 
 	var task = tasks.fetch()[Template.instance().taskNum.get()];
 
-	var newRound = {"pairNum": parseInt(task.pairNum), "claim": answer, "bonus": payment,
-									"altBonus": altPayment, "errorRate": errorRate};
+	var newRound = {"pairNum": parseInt(task.pairNum), "claim": parseInt(answer),  "bonus": parseFloat(payment),
+									"altBonus": parseFloat(altPayment), "references": references, "errorRate": parseFloat(errorRate)};
 
 	worker.trainingImageRounds.push(newRound);
 	Workers.update({_id: worker._id}, {$set: {"trainingImageRounds": worker.trainingImageRounds}});
@@ -169,12 +145,10 @@ function addAnswer(answer){
 
 Template.training_image_game.onCreated(function () {
 	tasks = RealTasks.find();
-	data = TestData.find();
+	imageData = ImageTestData.find();
+	errorRates = ErrorRates.find().fetch()[0].image_errs;
+
 	worker = Workers.findOne({"workerId": worker_Id});
-	generateErrors();
-	setTimeout(function(){
-		console.log('created: ' +p0Err);
-	}, 500);
 
 	this.roundNum = new ReactiveVar(1);
 	this.taskNum = new ReactiveVar(Math.floor(Math.random()*tasks.count()));
@@ -218,7 +192,6 @@ Template.training_image_game.events={
 		template.roundNum.set(template.roundNum.get()+1);
 		template.taskNum.set(Math.floor(Math.random()*tasks.count()));
 
-		generateErrors();
 		pressedNext();
 		updateTable();
 	},

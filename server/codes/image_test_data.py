@@ -11,11 +11,9 @@ P1 = 1 - P0
 T = 101 #number of test samples
 test_data = []
 
-for t in range(1,T):
-	if np.random.uniform(0,1) <= P0:
-		test_data.append(0)
-	else:
-		test_data.append(1)
+f = open('answers.txt', 'r')
+for line in f:
+    test_data.append(int(line.split('\t')[-1].rstrip()))
 
 #simulate agents
 N = 100
