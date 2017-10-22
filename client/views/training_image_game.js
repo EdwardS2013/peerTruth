@@ -1,7 +1,9 @@
 Meteor.subscribe('workers');
 Meteor.subscribe('realTasks');
+Meteor.subscribe('testData');
 
-var tasks, worker;
+var tasks, data, worker, p0Err, p1Err;
+const P0_VAL = 0.7;
 
 function pressedAnswer() {
 	var btns = document.getElementById('answerArea');
@@ -82,21 +84,68 @@ function updateTable() {
 	});
 }
 
+function generateErrors(){
+
+	$.ajax({
+		type: 'POST',
+		data: { P0: P0_VAL, filename:'test_data.csv' },
+		url: 'http://127.0.0.1:5000/error_rate',
+
+		success: function(response) {
+			var args = response.split(' ');
+			console.log('ajax, errs: ' + response);
+			p0Err = args[0];
+			p1Err = args[1];
+		},
+		error: function(response) {
+			return console.error(response);
+		}
+	});
+	/*
+	var p0 = P0_VAL;
+	var p1 = 1-p0;
+	var cnt = 0;
+
+	var p1a, p2a, p3a = [];
+
+	console.log(data.fetch());
+	*/
+}
+
+function generatePayment(answer, pairNum, p0Err, p1Err){
+	$.ajax({
+		type: 'POST',
+		data: { ans: answer, pair: pairNum, p0_est: p0Err, p1_est: p1Err, p0: P0_VAL },
+		url: 'http://127.0.0.1:5000/payment',
+
+		success: function(response) {
+			console.log('ajax, pay: ' + response);
+			return parseFloat(response);
+		},
+		error: function(response) {
+			return console.error(response);
+		}
+	});
+}
+
 function addAnswer(answer){
 	var payment, altChoice, altPayment, errorRate;
 	if(answer) {
 		//yes
-		payment = 0.5;
+		errorRate = parseFloat(p0Err);
 		altChoice = 'No';
-		altPayment = 0.25;
-		errorRate = 0.2;
-	} else {
-		payment = 0.25;
-		altChoice = 'Yes';
-		altPayment = 0.5;
-		errorRate = 0.2;
-	}
 
+		payment = generatePayment(answer, Template.instance().taskNum.get()+1, p0Err, p1Err);
+		setTimeout(function(){
+			console.log(payment);
+		}, 500);
+		altPayment = 0.25;
+	} else {
+		errorRate = parseFloat(p1Err);
+		altChoice = 'Yes';
+		payment = 0.25;
+		altPayment = 0.5;
+	}
 	var btns = document.getElementById('answerArea');
 	var wrapper = document.createElement('H4');
   var paymentText = document.createTextNode('Your bonus payment would have been: $' + payment);
@@ -111,7 +160,7 @@ function addAnswer(answer){
 
 	var task = tasks.fetch()[Template.instance().taskNum.get()];
 
-	var newRound = {"pairNum": task.pairNum, "claim": answer, "bonus": payment,
+	var newRound = {"pairNum": parseInt(task.pairNum), "claim": answer, "bonus": payment,
 									"altBonus": altPayment, "errorRate": errorRate};
 
 	worker.trainingImageRounds.push(newRound);
@@ -120,7 +169,12 @@ function addAnswer(answer){
 
 Template.training_image_game.onCreated(function () {
 	tasks = RealTasks.find();
+	data = TestData.find();
 	worker = Workers.findOne({"workerId": worker_Id});
+	generateErrors();
+	setTimeout(function(){
+		console.log('created: ' +p0Err);
+	}, 500);
 
 	this.roundNum = new ReactiveVar(1);
 	this.taskNum = new ReactiveVar(Math.floor(Math.random()*tasks.count()));
@@ -164,6 +218,7 @@ Template.training_image_game.events={
 		template.roundNum.set(template.roundNum.get()+1);
 		template.taskNum.set(Math.floor(Math.random()*tasks.count()));
 
+		generateErrors();
 		pressedNext();
 		updateTable();
 	},
