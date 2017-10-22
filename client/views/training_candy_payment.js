@@ -1,4 +1,9 @@
 Meteor.subscribe('workers');
+Meteor.subscribe('candyTestData');
+Meteor.subscribe('errorRates');
+
+var candyData, errorRates, worker;
+const NUM_REFS = 2;
 
 function getBonus(candyClaim) {
   var btns = document.getElementById('answerArea');
@@ -7,23 +12,33 @@ function getBonus(candyClaim) {
   }
 
   var payment, altChoice, altPayment, errorRate;
+  var references = [];
 
-  //calculate payments, error rate, etc
-  var mmPay = 1;
-  var gmPay = 0.35;
+  var newTr = worker.trainingCandyRounds.slice();
+  var last = newTr[newTr.length-1];
+
+  var report = candyData.fetch()[last.taskNum];
+  //p0 = 0 = mm, p1 = 1 = gummy
   if(candyClaim) {
-    //claimed mm
-    payment = mmPay;
-    altPayment = gmPay;
-    altChoice = 'Gummy Bear';
-    errorRate = 0.1;
-  } else {
     //claimed gm
-    payment = gmPay;
-    altPayment = mmPay;
+    errorRate = errorRates[1];
     altChoice = 'M&M';
-    errorRate = 0.1;
+    payment = report.pay_1;
+    altPayment = report.pay_0;
+
+  } else {
+    //claimed mm
+    errorRate = errorRates[0];
+    altChoice = 'Gummy Bear';
+    payment = report.pay_0;
+    altPayment = report.pay_1;
   }
+
+  for (i = 0; i < NUM_REFS; i++) {
+    references.push(parseInt(report.reports[Math.floor(Math.random()*report.reports.length)]));
+	}
+
+  console.log(references);
 
   var wrapper = document.createElement('H4');
   var paymentText = document.createTextNode('Your bonus payment would have been: $' + payment);
@@ -35,8 +50,6 @@ function getBonus(candyClaim) {
   wrapper.appendChild(altPaymentText);
   btns.appendChild(wrapper);
 
-  var worker = Workers.findOne({"workerId": worker_Id});
-
   var rn = worker.trainingCandyRounds.length + 1;
   if(rn <= 3) {
     document.getElementById('welcome-btn').style.visibility = "visible";
@@ -44,20 +57,25 @@ function getBonus(candyClaim) {
     document.getElementById('next-btn').style.visibility = "visible";
   }
 
-  var newTr = worker.trainingCandyRounds.slice();
-  var last = newTr[newTr.length-1];
-
   last.candyClaim = candyClaim;
   last.bonus = payment;
   last.altBonus = altPayment;
   last.errorRate = errorRate;
+  last.references = references;
   Workers.update({_id: worker._id}, {$set: {"trainingCandyRounds": newTr}});
 }
+
+Template.training_candy_payment.onCreated(function () {
+	candyData = CandyTestData.find();
+	errorRates = ErrorRates.find().fetch()[0].candy_errs;
+
+	worker = Workers.findOne({"workerId": worker_Id});
+});
 
 Template.training_candy_payment.rendered=function(){
   $('html,body').scrollTop(0);
 
-  var tr = Workers.findOne({"workerId": worker_Id}).trainingCandyRounds;
+  var tr = worker.trainingCandyRounds;
   var roundNum = 1;
   tr.forEach(function(round) {
     //not an in-progress round
@@ -75,18 +93,25 @@ Template.training_candy_payment.rendered=function(){
 
       cellRound.innerHTML = roundNum;
       if(round.candyType) {
-        cellYourCandy.innerHTML = "<img src=\"/images/mm.png\" id=\"history-image\">";
-      } else {
         cellYourCandy.innerHTML = "<img src=\"/images/gm.png\" id=\"history-image\">";
+      } else {
+        cellYourCandy.innerHTML = "<img src=\"/images/mm.png\" id=\"history-image\">";
       }
 
       if(round.candyClaim) {
-        cellYourClaim.innerHTML = "<img src=\"/images/mm.png\" id=\"history-image\">";
-      } else {
         cellYourClaim.innerHTML = "<img src=\"/images/gm.png\" id=\"history-image\">";
+      } else {
+        cellYourClaim.innerHTML = "<img src=\"/images/mm.png\" id=\"history-image\">";
       }
 
-      cellOtherClaims.innerHTML = "<img src=\"/images/mm.png\" id=\"history-image\"><img src=\"/images/gm.png\" id=\"history-image\">";
+      for(var i = 0; i < round.references.length; i++) {
+  			if(round.references[i]) {
+  				cellOtherClaims.innerHTML += "<img src=\"/images/gm.png\" id=\"history-image\">";
+  			} else {
+  				cellOtherClaims.innerHTML += "<img src=\"/images/mm.png\" id=\"history-image\">";
+  			}
+  		}
+
       cellBonus.innerHTML = "$" + round.bonus;
       cellAltBonus.innerHTML = "$" + round.altBonus;
       cellErrorRate.innerHTML = round.errorRate;
@@ -98,10 +123,10 @@ Template.training_candy_payment.rendered=function(){
 
 Template.training_candy_payment.events={
   'click #submit-mm': function(event, template){
-    getBonus(1);
+    getBonus(0);
   },
   'click #submit-gm': function(event, template){
-    getBonus(0);
+    getBonus(1);
   },
   'click #welcome-btn': function(event, template){
     event.preventDefault();

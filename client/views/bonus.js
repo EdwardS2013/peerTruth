@@ -23,8 +23,7 @@ Template.bonus.events={
 			}
 			else
 			{
-				//Router.go('/training_candy_game');
-				Router.go('/training_image_game');
+				Router.go('/training_candy_game');
 			}
 		}
 	}

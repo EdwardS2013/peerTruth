@@ -1,4 +1,7 @@
 Meteor.subscribe('workers');
+Meteor.subscribe('candyTestData');
+
+var candyData;
 
 Template.training_candy_game.helpers({
 	//not using reactivevar as template is recreated every time
@@ -19,6 +22,12 @@ Template.training_candy_game.helpers({
 	},
 });
 
+Template.training_candy_game.onCreated(function () {
+	candyData = CandyTestData.find();
+	this.taskNum = new ReactiveVar(Math.floor(Math.random()*candyData.count()));
+	console.log(this.taskNum);
+});
+
 Template.training_candy_game.rendered=function(){
 	$('html,body').scrollTop(0);
 	startTime = new Date();
@@ -35,19 +44,23 @@ Template.training_candy_game.events={
 		var mmText = document.createTextNode('Your candy is: M&M');
 		var candy;
 
-		if(Math.random() >= 0.5) {
+		var task = candyData.fetch()[template.taskNum.get()];
+		console.log(task.reports[0]);
+		//p0 = 0 = mm, p1 = 1 = gummy
+		if(task.reports[0] == 0) {
 			//got mm
-			candy = 1;
+			candy = 0;
 			wrapHeader.appendChild(mmText);
 		} else {
 			//got gm
-			candy = 0;
+			candy = 1;
 			wrapHeader.appendChild(gummyText);
 		}
 
 		var worker = Workers.findOne({"workerId": worker_Id});
 		var newTr = worker.trainingCandyRounds.slice();
-		var newRound = {"candyType": candy, "candyClaim": null, "bonus": null, "altBonus": null, "errorRate": null};
+		var newRound = {"taskNum": template.taskNum.get(), "candyType": candy, "candyClaim": null,
+											"bonus": null, "altBonus": null, "errorRate": null};
 
 		newTr.push(newRound);
 		Workers.update({_id: worker._id}, {$set: {"trainingCandyRounds": newTr}});

@@ -1,5 +1,7 @@
 Meteor.subscribe('workers');
 
+const P0_VAL = 0.6;
+
 Template.real_candy_game.rendered=function(){
 	$('html,body').scrollTop(0);
 	startTime = new Date();
@@ -16,13 +18,13 @@ Template.real_candy_game.events={
 		var mmText = document.createTextNode('Your candy is: M&M');
 		var candy;
 
-		if(Math.random() >= 0.5) {
+		if(Math.random() < P0_VAL) {
 			//got mm
-			candy = 1;
+			candy = 0;
 			wrapHeader.appendChild(mmText);
 		} else {
 			//got gm
-			candy = 0;
+			candy = 1;
 			wrapHeader.appendChild(gummyText);
 		}
 
