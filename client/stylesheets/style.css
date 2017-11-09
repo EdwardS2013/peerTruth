@@ -72,6 +72,15 @@ a.header { display: block; font-weight: 700 }
 	color: gray;
 }
 
+#consent-label{
+	color: black;
+}
+
+#consent-box{
+	height: 15px;
+	width: 15px;
+}
+
 #bonus-btn{
 	margin-top: 230px;
 	color: gray;
@@ -155,14 +164,16 @@ a.header { display: block; font-weight: 700 }
 	height: 50px;
 }
 
-#house-image, #pair-image{
+#pair-image{
 	margin: auto;
 	padding-bottom: 50px;
 	height: 300px;
 }
 
 #house-image{
+	margin: auto;
 	display: block;
+	height: 500px;
 }
 
 #payment-bonus{

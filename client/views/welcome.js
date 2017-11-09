@@ -1,3 +1,5 @@
+var hidden;
+
 Template.welcome.rendered = function(){
 	if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
 	{
@@ -7,10 +9,21 @@ Template.welcome.rendered = function(){
 	$("p").css({
        fontSize: "110%"
     });
+	document.getElementById('welcome-btn').style.visibility = "hidden";
+	hidden = true;
 };
 
 
 Template.welcome.events={
+	'click #consent-box': function(event, template){
+		if(hidden){
+			document.getElementById('welcome-btn').style.visibility = "visible";
+			hidden = false;
+		} else {
+			document.getElementById('welcome-btn').style.visibility = "hidden";
+			hidden = true;
+		}
+	},
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
 		if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")

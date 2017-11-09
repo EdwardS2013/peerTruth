@@ -1,11 +1,21 @@
 <template name="welcome">
 	<div id="welcome-instruction" class="instruction">
 		<h1>Welcome!</h1>
-		<h4>This HIT is a study in which we would like to test how people react to a peer evaluation system. The idea is quite simple: when we do not know the ground-truth (the "real answer") to judge your answer fairly, we try to infer it from your peers’ answers. It’s okay if your peers are wrong (in any possible way, even if you don’t trust any of the recruited peers) -- we will be able to figure that out :) A very wrong answer is informative too if you know that it is more likely to be wrong. After all, your answer is as if evaluated against the ground-truth! So we hope this introduce a fair evaluation system for information infusion.</h4>
-
-
+		<p> We would like to invite you to participate in a web-based online experiment. This experiment is part of a research project whose purpose is to study how people share their information and make predictions. In the experiment, you may be asked to answer questions related to a forecasting problem, to make a prediction, or to participate in decision making games. Further instructions will be provided once you decide to participate in the experiment. A single experimental session should take no more than 20 minutes.</p>
+		<br>
+		<p><span style="font-weight:bold">Benefits and Risks:</span> You will be compensated with X cents as a base payment for participating in this experiment. Furthermore, you may be able to earn extra bonus depending on your decisions and choices and other participants’ decisions and choices in the experiment. We do not anticipate any risks from participating in this experiment. There is not direct benefit, except the payment, of participating in this experiment. Your participation will help with research on information elicitation and prediction.</p>
+		<br>
+		<p><span style="font-weight:bold">Privacy:</span>Your decisions and choices will be kept confidential and stored in private. Identifiable information will never be used or shared. In particular, your MTurk ID will be automatically replaced with an arbitrary alphanumeric code. In the future, the information you provide through your participation can be used in scientific publications. When sharing our findings with other researchers, we will remove all identifiable information. We will not use or share the data in any other way.</p>
+		<br>
+		<p><span style="font-weight:bold">Withdrawal:</span>Participation in this experiment is voluntary. You can withdraw your participation at any time by ceasing to answer questions and closing your browser. However, you will need to complete the experiment to receive payment.</p>
+		<br>
+		<p><span style="font-weight:bold">Contact:</span>If you have any questions, concerns or complaints about this research study, please contact the researcher for this study at social_experiments@seas.harvard.edu. This research has been reviewed by the Committee on the Use of Human Subjects in Research at Harvard University. They can be reached at 617-496-2847, Richard A. and Susan F. Smith Campus Center, 1350 Massachusetts Avenue, Suite 935, Cambridge, MA 02138, or cuhs@fas.harvard.edu, if you (1) have any questions, concerns, complaints, (2) cannot reach the research team, (3) want to talk to someone besides the research team, or (4) have questions about your rights as a research participant.</p>
+		<br>
+		<label id="consent-label"><input id="consent-box" type="checkbox">With full knowledge of all foregoing, I agree to participate in this experiment. You can save or print a copy of this screen for your record.</label>
+		<br><br>
+		<p>If you agree to take part in this research, please check the box above and click the button below to start the experiment!</p>
 	</div>
 	<div id="buttonArea">
-		<a href="" class="btn" id="welcome-btn">More details</a>
+		<a href="" class="btn" id="welcome-btn">Continue</a>
 	</div>
 </template>

@@ -11,27 +11,57 @@ function getBonus(candyClaim) {
     btns.removeChild(btns.lastChild);
   }
 
-  var payment, altChoice, altPayment, errorRate;
+  var payment, altChoice, altPayment, payAvg, payTruth, payLie, payMM, payGM, errorRate;
   var references = [];
 
   var newTr = worker.trainingCandyRounds.slice();
   var last = newTr[newTr.length-1];
 
   var report = candyData.fetch()[last.taskNum];
+  var pay_0 = parseFloat(report.pay_0);
+  var pay_1 = parseFloat(report.pay_1);
   //p0 = 0 = mm, p1 = 1 = gummy
   if(candyClaim) {
     //claimed gm
     errorRate = errorRates[1];
     altChoice = 'M&M';
-    payment = report.pay_1;
-    altPayment = report.pay_0;
-
+    payment = pay_1;
+    altPayment = pay_0;
   } else {
     //claimed mm
     errorRate = errorRates[0];
     altChoice = 'Gummy Bear';
-    payment = report.pay_0;
-    altPayment = report.pay_1;
+    payment = pay_0;
+    altPayment = pay_1;
+  }
+
+  if(newTr.length < 2) {
+    payAvg = payment;
+    payMM = pay_0;
+    payGM = pay_1;
+    if(last.candyType) {
+      //truth GM
+      payTruth = pay_1;
+      payLie = pay_0;
+    } else {
+      //truth MM
+      payTruth = pay_0;
+      payLie = pay_1;
+    }
+  } else {
+    var previous = newTr[newTr.length-2];
+    payAvg = ((previous.payAvg*(newTr.length-1))+payment)/(newTr.length);
+    payMM = ((previous.payMM*(newTr.length-1))+pay_0)/(newTr.length);
+    payGM = ((previous.payGM*(newTr.length-1))+pay_1)/(newTr.length);
+    if(last.candyType) {
+      //truth GM
+      payTruth = ((previous.payTruth*(newTr.length-1))+pay_1)/(newTr.length);
+      payLie = ((previous.payLie*(newTr.length-1))+pay_0)/(newTr.length);
+    } else {
+      //truth MM
+      payTruth = ((previous.payTruth*(newTr.length-1))+pay_0)/(newTr.length);
+      payLie = ((previous.payLie*(newTr.length-1))+pay_1)/(newTr.length);
+    }
   }
 
   for (i = 0; i < NUM_REFS; i++) {
@@ -40,18 +70,8 @@ function getBonus(candyClaim) {
 
   console.log(references);
 
-  var wrapper = document.createElement('H4');
-  var paymentText = document.createTextNode('Your bonus payment would have been: $' + payment);
-  var altPaymentText = document.createTextNode('Had you chosen to report ' + altChoice +
-                                                ' instead, your bonus payment would have been: $' + altPayment);
-  wrapper.appendChild(paymentText);
-  wrapper.appendChild(document.createElement('br'));
-  wrapper.appendChild(document.createElement('br'));
-  wrapper.appendChild(altPaymentText);
-  btns.appendChild(wrapper);
-
   var rn = worker.trainingCandyRounds.length + 1;
-  if(rn <= 3) {
+  if(rn <= 5) {
     document.getElementById('welcome-btn').style.visibility = "visible";
   } else {
     document.getElementById('next-btn').style.visibility = "visible";
@@ -60,7 +80,12 @@ function getBonus(candyClaim) {
   last.candyClaim = candyClaim;
   last.bonus = payment;
   last.altBonus = altPayment;
-  last.errorRate = errorRate;
+  last.payAvg = payAvg;
+  last.payTruth = payTruth;
+  last.payLie = payLie;
+  last.payMM = payMM;
+  last.payGM = payGM;
+  last.errorRate = parseFloat(errorRate);
   last.references = references;
   Workers.update({_id: worker._id}, {$set: {"trainingCandyRounds": newTr}});
 }
@@ -87,9 +112,11 @@ Template.training_candy_payment.rendered=function(){
       var cellYourCandy = row.insertCell(1);
       var cellYourClaim = row.insertCell(2);
       var cellOtherClaims = row.insertCell(3);
-      var cellBonus = row.insertCell(4);
-      var cellAltBonus = row.insertCell(5);
-      var cellErrorRate = row.insertCell(6);
+      var cellAvg = row.insertCell(4);
+      var cellTruth = row.insertCell(5);
+      var cellLie = row.insertCell(6);
+      var cellGM = row.insertCell(7);
+      var cellMM = row.insertCell(8);
 
       cellRound.innerHTML = roundNum;
       if(round.candyType) {
@@ -111,10 +138,13 @@ Template.training_candy_payment.rendered=function(){
   				cellOtherClaims.innerHTML += "<img src=\"/images/mm.png\" id=\"history-image\">";
   			}
   		}
+      console.log(typeof(round.payAvg));
 
-      cellBonus.innerHTML = "$" + round.bonus;
-      cellAltBonus.innerHTML = "$" + round.altBonus;
-      cellErrorRate.innerHTML = round.errorRate;
+      cellAvg.innerHTML = "$" + round.payAvg.toFixed(2);
+      cellTruth.innerHTML = "$" + round.payTruth.toFixed(2);
+      cellLie.innerHTML = "$" + round.payLie.toFixed(2);
+      cellGM.innerHTML = "$" + round.payGM.toFixed(2);
+      cellMM.innerHTML = "$" + round.payMM.toFixed(2);
 
       roundNum += 1;
     }
