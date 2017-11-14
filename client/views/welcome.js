@@ -55,7 +55,13 @@ Template.welcome.events={
 				}
 				else
 				{
-					Router.go('/bonus');
+					if(Workers.find().count() % 2 == 1) {
+						//1st, 3rd, 5th... workers go to tutorial phase
+						Router.go('/bonus');
+					} else {
+						//even number workers go to control phase
+						Router.go('/control_bonus');
+					}
 				}
 			}
 		}

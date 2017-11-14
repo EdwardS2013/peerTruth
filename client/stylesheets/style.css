@@ -63,6 +63,7 @@ a.header { display: block; font-weight: 700 }
 }
 
 #next-btn{
+	margin-bottom: 20px;
 	width: 220px;
 	color: gray;
 }
@@ -315,7 +316,7 @@ img { margin: 0; padding: 0; border: none }
 }
 #templatemo_main_wrapper {
 	width: 1000px;
-	height: 1500px;
+	min-height: 700px;
 	margin: auto;
 	padding: 9px;
 	background: url(/images/templatemo_content_bg.png) no-repeat;
@@ -324,7 +325,7 @@ img { margin: 0; padding: 0; border: none }
 
 #templatemo_main {
 	width: 1000px;
-	height: 1500px;
+	min-height: 700px;
 	overflow: hidden;
 }
 
@@ -357,7 +358,7 @@ img { margin: 0; padding: 0; border: none }
 	overflow:hidden;
 	width: 7000px;
 	position:relative;
-	height: 1500px;
+	min-height: 700px;
 	background: #d3d3d3;
 }
 
@@ -365,7 +366,7 @@ img { margin: 0; padding: 0; border: none }
 	position:relative;
 	float:left;
 	width: 1000px;
-	height: 1500px;
+	min-height: 700px;
 	margin-right: 20px;
 	background: #d3d3d3;
 }

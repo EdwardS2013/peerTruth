@@ -38,6 +38,11 @@ Router.route('/bonus', function(){
 		this.render('bonus');
 	});
 
+Router.route('/control_bonus', function(){
+		this.layout('MainLayout');
+		this.render('control_bonus');
+	});
+
 Router.route('/end', function(){
 		this.layout('MainLayout');
 		this.render('end');
