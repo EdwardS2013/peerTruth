@@ -1,8 +1,9 @@
 Meteor.subscribe('workers');
 Meteor.subscribe('candyTestData');
+Meteor.subscribe('candyTestDataPTS');
 Meteor.subscribe('errorRates');
 
-var candyData, errorRates, worker;
+var candyData, candyDataPTS, errorRates, worker, taskType;
 const NUM_REFS = 2;
 
 function getBonus(candyClaim) {
@@ -17,7 +18,15 @@ function getBonus(candyClaim) {
   var newTr = worker.trainingCandyRounds.slice();
   var last = newTr[newTr.length-1];
 
-  var report = candyData.fetch()[last.taskNum];
+  var report;
+  if(taskType == 0) {
+    //our mechanism
+    report = candyData.fetch()[last.taskNum];
+  } else if(taskType == 2) {
+    //PTS mechanism
+    report = candyDataPTS.fetch()[last.taskNum];
+  }
+  console.log(report);
   var pay_0 = parseFloat(report.pay_0);
   var pay_1 = parseFloat(report.pay_1);
   //p0 = 0 = mm, p1 = 1 = gummy
@@ -85,16 +94,22 @@ function getBonus(candyClaim) {
   last.payLie = payLie;
   last.payMM = payMM;
   last.payGM = payGM;
-  last.errorRate = parseFloat(errorRate);
+  if(taskType == 0) {
+    //error rates only if our mechanism
+    last.errorRate = parseFloat(errorRate);
+  }
   last.references = references;
   Workers.update({_id: worker._id}, {$set: {"trainingCandyRounds": newTr}});
 }
 
 Template.training_candy_payment.onCreated(function () {
 	candyData = CandyTestData.find();
+  candyDataPTS = CandyTestDataPTS.find();
 	errorRates = ErrorRates.find().fetch()[0].candy_errs;
 
 	worker = Workers.findOne({"workerId": worker_Id});
+  taskType = worker.taskType;
+  console.log(taskType);
 });
 
 Template.training_candy_payment.rendered=function(){
@@ -140,11 +155,11 @@ Template.training_candy_payment.rendered=function(){
   		}
       console.log(typeof(round.payAvg));
 
-      cellAvg.innerHTML = "$" + round.payAvg.toFixed(2);
-      cellTruth.innerHTML = "$" + round.payTruth.toFixed(2);
-      cellLie.innerHTML = "$" + round.payLie.toFixed(2);
-      cellGM.innerHTML = "$" + round.payGM.toFixed(2);
-      cellMM.innerHTML = "$" + round.payMM.toFixed(2);
+      cellAvg.innerHTML = round.payAvg.toFixed(2) + " pts";
+      cellTruth.innerHTML = round.payTruth.toFixed(2) + " pts";
+      cellLie.innerHTML = round.payLie.toFixed(2) + " pts";
+      cellGM.innerHTML = round.payGM.toFixed(2) + " pts";
+      cellMM.innerHTML = round.payMM.toFixed(2) + " pts";
 
       roundNum += 1;
     }

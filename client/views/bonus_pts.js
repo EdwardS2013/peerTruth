@@ -1,4 +1,4 @@
-Template.control_bonus.rendered = function(){
+Template.bonus_pts.rendered = function(){
 	$('html,body').scrollTop(0);
 	if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
 	{
@@ -7,7 +7,7 @@ Template.control_bonus.rendered = function(){
 };
 
 
-Template.control_bonus.events={
+Template.bonus_pts.events={
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
 		if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
@@ -23,7 +23,7 @@ Template.control_bonus.events={
 			}
 			else
 			{
-				Router.go('/real_candy_game');
+				Router.go('/training_candy_game');
 			}
 		}
 	}

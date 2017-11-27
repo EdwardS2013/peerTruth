@@ -26,6 +26,7 @@ Template.welcome.events={
 	},
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
+
 		if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
 		{
 			Router.go('/');
@@ -49,19 +50,19 @@ Template.welcome.events={
 												trainingImageRounds: [],
 												dataCandyRound: [],
 												dataImageRound: []});
-				if (bonusLevel == '0')
-				{
-					Router.go('/game');
-				}
-				else
-				{
-					if(Workers.find().count() % 2 == 1) {
-						//1st, 3rd, 5th... workers go to tutorial phase
-						Router.go('/bonus');
-					} else {
-						//even number workers go to control phase
-						Router.go('/control_bonus');
-					}
+				var worker = Workers.findOne({"workerId": worker_Id});
+				if(Workers.find().count() % 3 == 1) {
+					//1st, 4th, 7th... workers go to our mechanism
+					Workers.update({_id: worker._id}, {$set: {"taskType": 0}});
+					Router.go('/bonus');
+				} else if(Workers.find().count() % 3 == 2) {
+					//2nd, 5th, 8th.. workers go to control phase
+					Workers.update({_id: worker._id}, {$set: {"taskType": 1}});
+					Router.go('/bonus_control');
+				} else {
+					//3rd, 6th, 9th... workers go to PTS mechanism
+					Workers.update({_id: worker._id}, {$set: {"taskType": 2}});
+					Router.go('/bonus_pts');
 				}
 			}
 		}

@@ -25,7 +25,6 @@ Template.training_candy_game.helpers({
 Template.training_candy_game.onCreated(function () {
 	candyData = CandyTestData.find();
 	this.taskNum = new ReactiveVar(Math.floor(Math.random()*candyData.count()));
-	console.log(this.taskNum);
 });
 
 Template.training_candy_game.rendered=function(){
@@ -45,7 +44,6 @@ Template.training_candy_game.events={
 		var candy;
 
 		var task = candyData.fetch()[template.taskNum.get()];
-		console.log(task.reports[0]);
 		//p0 = 0 = mm, p1 = 1 = gummy
 		if(task.reports[0] == 0) {
 			//got mm

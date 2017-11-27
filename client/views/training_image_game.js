@@ -1,9 +1,10 @@
 Meteor.subscribe('workers');
 Meteor.subscribe('realTasks');
 Meteor.subscribe('imageTestData');
+Meteor.subscribe('imageTestDataPTS');
 Meteor.subscribe('errorRates');
 
-var tasks, imageData, errorRates, worker;
+var tasks, imageData, imageDataPTS, errorRates, worker, taskType;
 const P0_VAL = 0.7;
 const NUM_REFS = 2;
 
@@ -89,34 +90,46 @@ function updateTable() {
 			}
 		}
 
-		cellAvg.innerHTML = "$" + round.payAvg.toFixed(2);
-		cellSame.innerHTML = "$" + round.paySame.toFixed(2);
-		cellDiff.innerHTML = "$" + round.payDiff.toFixed(2);
+		cellAvg.innerHTML = round.payAvg.toFixed(2) + " pts";
+		cellSame.innerHTML = round.paySame.toFixed(2) + " pts";
+		cellDiff.innerHTML = round.payDiff.toFixed(2) + " pts";
 
     roundNum += 1;
 	});
 }
 
 function addAnswer(answer) {
-	var payment, altChoice, altPayment, payAvg, paySame, payDiff, errorRate;
+	var payment, altChoice, altPayment, payAvg, paySame, payDiff;
+	var errorRate = -1;
 	var references = [];
 
 	var imageTr = worker.trainingImageRounds;
 	console.log(imageTr);
 
-	var report = imageData.fetch()[Template.instance().taskNum.get()];
+	var report;
+	if(taskType == 0) {
+		//our mechanism
+		report = imageData.fetch()[Template.instance().taskNum.get()];
+	} else if(taskType == 2) {
+		//pts mechanism
+		report = imageDataPTS.fetch()[Template.instance().taskNum.get()];
+	}
 	var pay_0 = parseFloat(report.pay_0);
   var pay_1 = parseFloat(report.pay_1);
 
 	if(answer) {
 		//1 yes, members of different species
-		errorRate = errorRates[1];
+		if(taskType == 0) {
+			errorRate = errorRates[1];
+		}
 		altChoice = 'No';
 		payment = pay_1;
 		altPayment = pay_0;
 	} else {
 		//0 no, members of same species
-		errorRate = errorRates[0];
+		if(taskType == 0) {
+			errorRate = errorRates[0];
+		}
 		altChoice = 'Yes';
 		payment = pay_0;
 		altPayment = pay_1;
@@ -149,9 +162,11 @@ function addAnswer(answer) {
 Template.training_image_game.onCreated(function () {
 	tasks = RealTasks.find();
 	imageData = ImageTestData.find();
+	imageDataPTS = ImageTestDataPTS.find();
 	errorRates = ErrorRates.find().fetch()[0].image_errs;
 
 	worker = Workers.findOne({"workerId": worker_Id});
+	taskType = worker.taskType;
 
 	this.roundNum = new ReactiveVar(1);
 	this.taskNum = new ReactiveVar(Math.floor(Math.random()*tasks.count()));

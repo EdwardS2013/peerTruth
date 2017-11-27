@@ -19,8 +19,16 @@ Meteor.publish('candyTestData', function(){
 	return CandyTestData.find();
 });
 
+Meteor.publish('candyTestDataPTS', function(){
+	return CandyTestDataPTS.find();
+});
+
 Meteor.publish('imageTestData', function(){
 	return ImageTestData.find();
+});
+
+Meteor.publish('imageTestDataPTS', function(){
+	return ImageTestDataPTS.find();
 });
 
 Meteor.publish('errorRates', function(){

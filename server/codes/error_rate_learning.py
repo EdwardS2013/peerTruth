@@ -101,6 +101,30 @@ def payment(ans,ref_ans,p0_est,p1_est,P0):
 	
 	pay = pay - bias
 	return pay
+
+def payment_PTS(ans,refs,ref_ans):
+    #implementing peer truth serum
+    k = len(refs)
+    #the first ref answer is to compare, the rest is to compute the priors
+    refs = np.array(refs)
+
+    p0 = (refs==0).sum()/k
+    p1 = (refs==1).sum()/k
+    if ans == 0:
+            if ref_ans == 0:
+                    pay = 1/p0
+            else:
+                    pay = 0
+    else:
+            if ref_ans == 1:
+                    pay = 1/p1
+            else:
+                    pay = 0
+
+    scale = max(1/p0,1/p1)
+    pay = 0.1*pay/scale
+    return pay
+
 def write_candy_pays():
     a = []
     with open('candy_test_data.csv', 'r') as f:
@@ -130,6 +154,31 @@ def write_candy_pays():
             f.write(line.rstrip().strip(']')+', '+str(pay_0)+', '+str(pay_1)+']\n')
 
     f.close()
+
+def write_candy_pays_pts():
+    a = []
+    with open('candy_test_data_pts.csv', 'r') as f:
+        for line in f:
+            a.append(line)
+    f.close()
+
+    with open('candy_test_data_pts.csv', 'w') as f:
+        for line in a:
+            pays_0 = []
+            pays_1 = []
+            refs = list(map(int, line.rstrip().strip('[]').split(', ')[2:]))
+            print(line)
+            print(refs)
+            for i in range(20):
+                ref_ans = refs[np.random.randint(0, len(refs))]
+                pays_0.append(payment_PTS(0, refs, ref_ans))
+                pays_1.append(payment_PTS(1, refs, ref_ans))
+            pay_0 = np.mean(pays_0)
+            pay_1 = np.mean(pays_1)
+            f.write(line.rstrip().strip(']')+', '+str(pay_0)+', '+str(pay_1)+']\n')
+
+    f.close()
+
 
 def write_image_pays():
     a = []
@@ -161,4 +210,27 @@ def write_image_pays():
 
     f.close()
 
-write_image_pays()
+def write_image_pays_pts():
+    a = []
+    with open('image_test_data_pts.csv', 'r') as f:
+        for line in f:
+            a.append(line)
+    f.close()
+
+    with open('image_test_data_pts.csv', 'w') as f:
+        for line in a:
+            pays_0 = []
+            pays_1 = []
+            refs = list(map(int, line.rstrip().strip('[]').split(', ')[2:]))
+            for i in range(20):
+                ref_ans = refs[np.random.randint(0, len(refs))]
+                pays_0.append(payment_PTS(0, refs, ref_ans))
+                pays_1.append(payment_PTS(1, refs, ref_ans))
+            pay_0 = np.mean(pays_0)
+            pay_1 = np.mean(pays_1)
+            f.write(line.rstrip().strip(']')+', '+str(pay_0)+', '+str(pay_1)+']\n')
+
+    f.close()
+
+
+write_image_pays_pts()

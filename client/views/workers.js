@@ -1,1 +1,0 @@
-Workers = new Meteor.Collection('workers');

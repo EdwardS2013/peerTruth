@@ -18,8 +18,10 @@ gup = function(path, name){
 
 Router.route('/', function(){
 		path = window.location.href;
-		//worker_Id = gup(path, 'workerId');
-    worker_Id = Math.random().toString(36).substring(7);
+		worker_Id = gup(path, 'workerId');
+    if(worker_Id == "") {
+      worker_Id = Math.random().toString(36).substring(7);
+    }
 		assignment_Id = gup(path, 'assignmentId');
 		hit_Id = gup(path, 'hitId');
 		bonusLevel = gup(path, 'urls');
@@ -38,9 +40,14 @@ Router.route('/bonus', function(){
 		this.render('bonus');
 	});
 
-Router.route('/control_bonus', function(){
+Router.route('/bonus_control', function(){
 		this.layout('MainLayout');
-		this.render('control_bonus');
+		this.render('bonus_control');
+	});
+
+Router.route('/bonus_pts', function(){
+		this.layout('MainLayout');
+		this.render('bonus_pts');
 	});
 
 Router.route('/end', function(){
