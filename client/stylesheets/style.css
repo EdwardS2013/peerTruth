@@ -84,11 +84,13 @@ a.header { display: block; font-weight: 700 }
 
 #bonus-btn{
 	margin-top: 230px;
+
 	color: gray;
 }
 
 #end-btn{
 	margin-top: 200px;
+	margin-bottom: 20px;
 	color: gray;
 }
 
