@@ -1,6 +1,28 @@
 Meteor.subscribe('workers');
 
 const P0_VAL = 0.6;
+const ROUND_TOTAL = 5;
+
+Template.real_candy_game.helpers({
+	//not using reactivevar as template is recreated every time
+	roundNum: function(){
+		var tr = Workers.findOne({"workerId": worker_Id}).dataCandyRound;
+		var roundNum = 1;
+
+		if(tr.length != 0) {
+			tr.forEach(function(round) {
+				if(round.bonus != null) {
+					roundNum += 1;
+				}
+			});
+		}
+
+		return roundNum;
+	},
+	roundTotal: function(){
+		return ROUND_TOTAL;
+	},
+});
 
 Template.real_candy_game.rendered=function(){
 	$('html,body').scrollTop(0);

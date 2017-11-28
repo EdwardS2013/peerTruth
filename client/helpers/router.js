@@ -27,6 +27,11 @@ Router.route('/', function(){
 		bonusLevel = gup(path, 'urls');
 
 		this.layout('MainLayout');
+		this.render('intro');
+	});
+
+Router.route('/welcome', function(){
+		this.layout('MainLayout');
 		this.render('welcome');
 	});
 
@@ -38,6 +43,11 @@ Router.route('/transit', function(){
 Router.route('/bonus', function(){
 		this.layout('MainLayout');
 		this.render('bonus');
+	});
+
+Router.route('/bonus2', function(){
+		this.layout('MainLayout');
+		this.render('bonus2');
 	});
 
 Router.route('/bonus_control', function(){

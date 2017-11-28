@@ -1,4 +1,4 @@
-Template.bonus.rendered = function(){
+Template.bonus2.rendered = function(){
 	$('html,body').scrollTop(0);
 	if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
 	{
@@ -7,7 +7,7 @@ Template.bonus.rendered = function(){
 };
 
 
-Template.bonus.events={
+Template.bonus2.events={
 	'click #next-btn': function(event, template){
 		event.preventDefault();
 		if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
@@ -23,7 +23,7 @@ Template.bonus.events={
 			}
 			else
 			{
-				Router.go('/bonus2');
+				Router.go('/welcome');
 			}
 		}
 	}

@@ -23,7 +23,7 @@ Template.bonus_control.events={
 			}
 			else
 			{
-				Router.go('/real_candy_game');
+				Router.go('/welcome');
 			}
 		}
 	}

@@ -2,6 +2,7 @@ Meteor.subscribe('workers');
 Meteor.subscribe('realTasks');
 
 var tasks;
+const ROUND_TOTAL = 10;
 
 function pressedAnswer() {
 	var btns = document.getElementById('answerArea');
@@ -74,13 +75,14 @@ Template.real_image_game.helpers({
 	roundNum: function(){
 		return Template.instance().roundNum.get();
 	},
-
+	roundTotal: function(){
+		return ROUND_TOTAL;
+	},
 	taskImageLeft: function(){
 		var task = tasks.fetch()[Template.instance().taskNum.get()];
 
 		return '/images/pairs/'+task.pairNum+'/a.jpg';
 	},
-
 	taskImageRight: function(){
 		var task = tasks.fetch()[Template.instance().taskNum.get()];
 

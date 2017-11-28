@@ -1,5 +1,7 @@
 Meteor.subscribe('workers');
 
+const ROUND_TOTAL = 5;
+
 function getBonus(candyClaim) {
   var btns = document.getElementById('answerArea');
   while(btns.lastChild) {
@@ -25,8 +27,6 @@ function getBonus(candyClaim) {
     errorRate = 0.1;
   }
 
-  document.getElementById('next-btn').style.visibility = "visible";
-
   var worker = Workers.findOne({"workerId": worker_Id});
   var newTr = worker.dataCandyRound.slice();
   var last = newTr[newTr.length-1];
@@ -36,6 +36,13 @@ function getBonus(candyClaim) {
   last.altBonus = altPayment;
   last.errorRate = errorRate;
   Workers.update({_id: worker._id}, {$set: {"dataCandyRound": newTr}});
+
+  var rn = worker.dataCandyRound.length + 1;
+  if(rn <= ROUND_TOTAL) {
+    document.getElementById('welcome-btn').style.visibility = "visible";
+  } else {
+    document.getElementById('next-btn').style.visibility = "visible";
+  }
 }
 
 Template.real_candy_payment.rendered=function(){
@@ -49,6 +56,10 @@ Template.real_candy_payment.events={
   },
   'click #submit-gm': function(event, template){
     getBonus(0);
+  },
+  'click #welcome-btn': function(event, template){
+    event.preventDefault();
+    Router.go('real_candy_game');
   },
   'click #next-btn': function(event, template){
     event.preventDefault();

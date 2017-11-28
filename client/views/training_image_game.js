@@ -6,7 +6,8 @@ Meteor.subscribe('errorRates');
 
 var tasks, imageData, imageDataPTS, errorRates, worker, taskType;
 const P0_VAL = 0.7;
-const NUM_REFS = 2;
+const NUM_REFS = 1;
+const ROUND_TOTAL = 5;
 
 function pressedAnswer() {
 	var btns = document.getElementById('answerArea');
@@ -176,13 +177,14 @@ Template.training_image_game.helpers({
 	roundNum: function(){
 		return Template.instance().roundNum.get();
 	},
-
+	roundTotal: function(){
+		return ROUND_TOTAL;
+	},
 	taskImageLeft: function(){
 		var task = tasks.fetch()[Template.instance().taskNum.get()];
 
 		return '/images/pairs/'+task.pairNum+'/a.jpg';
 	},
-
 	taskImageRight: function(){
 		var task = tasks.fetch()[Template.instance().taskNum.get()];
 

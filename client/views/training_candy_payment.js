@@ -4,7 +4,8 @@ Meteor.subscribe('candyTestDataPTS');
 Meteor.subscribe('errorRates');
 
 var candyData, candyDataPTS, errorRates, worker, taskType;
-const NUM_REFS = 2;
+const NUM_REFS = 1;
+const ROUND_TOTAL = 5;
 
 function getBonus(candyClaim) {
   var btns = document.getElementById('answerArea');
@@ -80,7 +81,7 @@ function getBonus(candyClaim) {
   console.log(references);
 
   var rn = worker.trainingCandyRounds.length + 1;
-  if(rn <= 5) {
+  if(rn <= ROUND_TOTAL) {
     document.getElementById('welcome-btn').style.visibility = "visible";
   } else {
     document.getElementById('next-btn').style.visibility = "visible";

@@ -23,7 +23,7 @@ Template.bonus_pts.events={
 			}
 			else
 			{
-				Router.go('/training_candy_game');
+				Router.go('/welcome');
 			}
 		}
 	}

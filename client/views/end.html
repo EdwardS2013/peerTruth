@@ -1,11 +1,19 @@
 <template name="end">
 	<div class="instruction">
-		<h5><strong>Thanks for taking our HIT!</strong></h5>
+		<h5><strong>Thanks for taking our HIT! Please answer a couple of exit questions.</strong></h5>
+		<p>Did you enjoy our HIT? Please leave a number between 1 and 5.</p>
+		<textarea cols="90" rows="8" name="enjoy" id="enjoy"></textarea>
+		<br>
+		<p>Were the explanations clear to you?</p>
+		<textarea cols="90" rows="8" name="clarity" id="clarity"></textarea>
+		<br>
+		<p>How did you come up with your answers? Please describe your strategy.</p>
+		<textarea cols="90" rows="8" name="strategy" id="strategy"></textarea>
 		<br>
 		<p>Do you have any comments for us? (e.g. Did you find the game interesting? Did you notice any bugs?)</p>
 		<br>
 		<p>Remember that your bonus will be calculated and sent out later</p>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<textarea cols="90" rows="8" name="comment" id="comment"></textarea>
+		<textarea cols="90" rows="8" name="comment" id="comment"></textarea>
 		<br><br>
 
 	</div>

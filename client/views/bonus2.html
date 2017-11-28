@@ -1,0 +1,20 @@
+<template name="bonus2">
+	<div id="welcome-instruction" class="instruction">
+		<p>Suppose when we know the true answer, you will get <span style="color:red">5c</span> bonus whenever your answer is correct. Now we don’t know the ground-truth answer. Suppose your answer for a particular question is “Yes”. Your matched peer’s answer happens to be “Yes”. We know roughly among all tasks, the fraction of true answer being “Yes” has 30% chance. And we know your peer’s answer has 30% chance of making a mistake (reporting “No”) when the true answer is “Yes”, and 20% when the ground-truth is “No”. Then we will compute your bonus accordingly to the following:</p>
+		<br>
+		<p>1*1/30% * (1-20%)/(1-20%-30%)*5c ~ 25c!</p>
+		<br>
+		<p><span style="font-weight:bold">In above payment,</span></p>
+		<br>
+		<p><span style="color:red">“1”</span> is to reward your agreement with another peer answer (evidence of consensus!)</p>
+		<p><span style="color:red">“1/30%”</span> is to reward you based on how popular the answer is.</p>
+		<p><span style="color:red">“(1-20%)/(1-20%-30%) = 1.6”</span> is to reward you according to how much mistake is contained in the peer answer. So we account for their mistakes, not you! Similarly if your is “No”, and your peer agent’s answer is “No” too. Your bonus is:</p>
+		<br>
+		<p>1*1/70% * (1-30%)/(1-20%-30%)*5c ~ 10c</p>
+		<br>
+		<p>Whenever you are ready, click on the button below to proceed. Enjoy the task!</p>
+	</div>
+	<div id="buttonArea">
+		<a href="" class="btn" id="next-btn">Consent</a>
+	</div>
+</template>

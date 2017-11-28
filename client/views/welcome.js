@@ -1,3 +1,5 @@
+Meteor.subscribe('workers');
+
 var hidden;
 
 Template.welcome.rendered = function(){
@@ -40,29 +42,14 @@ Template.welcome.events={
 			}
 			else
 			{
-				var today = new Date();
-				Workers.insert({workerId: worker_Id,
-												assignmentId: assignment_Id,
-												hitId: hit_Id,
-												group: urls,
-												time: today.toString(),
-												trainingCandyRounds: [],
-												trainingImageRounds: [],
-												dataCandyRound: [],
-												dataImageRound: []});
 				var worker = Workers.findOne({"workerId": worker_Id});
-				if(Workers.find().count() % 3 == 1) {
-					//1st, 4th, 7th... workers go to our mechanism
-					Workers.update({_id: worker._id}, {$set: {"taskType": 0}});
-					Router.go('/bonus');
-				} else if(Workers.find().count() % 3 == 2) {
-					//2nd, 5th, 8th.. workers go to control phase
-					Workers.update({_id: worker._id}, {$set: {"taskType": 1}});
-					Router.go('/bonus_control');
+				var taskType = worker.taskType;
+				if(taskType == 0 || taskType == 2) {
+					//either 1/prior or our mechanism
+					Router.go('/training_candy_game');
 				} else {
-					//3rd, 6th, 9th... workers go to PTS mechanism
-					Workers.update({_id: worker._id}, {$set: {"taskType": 2}});
-					Router.go('/bonus_pts');
+					//control
+					Router.go('/real_candy_game');
 				}
 			}
 		}

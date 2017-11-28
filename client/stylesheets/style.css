@@ -167,7 +167,7 @@ a.header { display: block; font-weight: 700 }
 
 #pair-image{
 	margin: auto;
-	padding-bottom: 50px;
+	padding-bottom: 15px;
 	height: 300px;
 }
 
@@ -316,16 +316,14 @@ img { margin: 0; padding: 0; border: none }
 }
 #templatemo_main_wrapper {
 	width: 1000px;
-	min-height: 700px;
+	/*min-height: 700px;*/
 	margin: auto;
 	padding: 9px;
-	background: url(/images/templatemo_content_bg.png) no-repeat;
-	background-size:100% 100%;
 }
 
 #templatemo_main {
 	width: 1000px;
-	min-height: 700px;
+	/*min-height: 700px;*/
 	overflow: hidden;
 }
 
@@ -358,7 +356,7 @@ img { margin: 0; padding: 0; border: none }
 	overflow:hidden;
 	width: 7000px;
 	position:relative;
-	min-height: 700px;
+	/*min-height: 700px;*/
 	background: #d3d3d3;
 }
 
@@ -366,7 +364,7 @@ img { margin: 0; padding: 0; border: none }
 	position:relative;
 	float:left;
 	width: 1000px;
-	min-height: 700px;
+	/*min-height: 700px;*/
 	margin-right: 20px;
 	background: #d3d3d3;
 }
