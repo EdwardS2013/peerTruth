@@ -122,7 +122,7 @@ def payment_PTS(ans,refs,ref_ans):
                     pay = 0
 
     scale = max(1/p0,1/p1)
-    pay = 0.1*pay/scale
+    pay = 10*pay/scale
     return pay
 
 def write_candy_pays():
