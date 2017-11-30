@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 
-client = MongoClient('127.0.0.1', 3001)
+port_num = input('Port number: ')
+client = MongoClient('127.0.0.1', port_num)
 db = client['meteor']
 tasks = db['realTasks']
 
