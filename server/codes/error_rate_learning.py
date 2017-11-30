@@ -232,5 +232,4 @@ def write_image_pays_pts():
 
     f.close()
 
-
 write_image_pays_pts()
