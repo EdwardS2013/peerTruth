@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 port_num = input('Port number: ')
-client = MongoClient('127.0.0.1', port_num)
+client = MongoClient('127.0.0.1', int(port_num))
 db = client['meteor']
 candy = db['candyTestData']
 image = db['imageTestData']

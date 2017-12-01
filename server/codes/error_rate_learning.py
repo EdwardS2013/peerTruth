@@ -87,17 +87,17 @@ def payment(ans,ref_ans,p0_est,p1_est,P0):
 			if ref_ans == 0:
 				pay = (1-p1_est)/(P0*(1-p0_est-p1_est))
 			else:
-				pay = -1*p1_est/(P0*(1-p0_est-p1_est))
+				pay = -1*p0_est/(P0*(1-p0_est-p1_est))
 
 		else:
 			if ref_ans == 0:
-				pay = -1*p0_est/(P1*(1-p0_est-p1_est))
+				pay = -1*p1_est/(P1*(1-p0_est-p1_est))
 			else:
 				pay = (1-p0_est)/(P1*(1-p0_est-p1_est))
 
 	#re-normalization
 	#bias for shifting the payment to non-negative.
-	bias = min([(1-p1_est)/(P0*(1-p0_est-p1_est)),-1*p1_est/(P0*(1-p0_est-p1_est)),-1*p0_est/(P1*(1-p0_est-p1_est)),(1-p0_est)/(P1*(1-p0_est-p1_est))])
+	bias = min([(1-p1_est)/(P0*(1-p0_est-p1_est)),-1*p0_est/(P0*(1-p0_est-p1_est)),-1*p1_est/(P1*(1-p0_est-p1_est)),(1-p0_est)/(P1*(1-p0_est-p1_est))])
 	
 	pay = pay - bias
 	return pay
@@ -232,4 +232,4 @@ def write_image_pays_pts():
 
     f.close()
 
-write_image_pays_pts()
+write_candy_pays()
