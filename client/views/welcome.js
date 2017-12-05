@@ -42,15 +42,7 @@ Template.welcome.events={
 			}
 			else
 			{
-				var worker = Workers.findOne({"workerId": worker_Id});
-				var taskType = worker.taskType;
-				if(taskType == 0 || taskType == 2) {
-					//either 1/prior or our mechanism
-					Router.go('/training_candy_game');
-				} else {
-					//control
-					Router.go('/real_candy_game');
-				}
+				Router.go('/candy_explanation');
 			}
 		}
 	}

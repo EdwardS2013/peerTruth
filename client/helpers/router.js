@@ -60,6 +60,11 @@ Router.route('/bonus_pts', function(){
 		this.render('bonus_pts');
 	});
 
+Router.route('/candy_explanation', function(){
+		this.layout('MainLayout');
+		this.render('candy_explanation');
+	});
+
 Router.route('/end', function(){
 		this.layout('MainLayout');
 		this.render('end');

@@ -4,7 +4,7 @@ Meteor.subscribe('imageTestData');
 Meteor.subscribe('imageTestDataPTS');
 Meteor.subscribe('errorRates');
 
-var tasks, imageData, imageDataPTS, errorRates, worker, taskType;
+var tasks, imageData, imageDataPTS, errorRates, worker, taskType, currentAns;
 const P0_VAL = 0.7;
 const NUM_REFS = 1;
 const ROUND_TOTAL = 5;
@@ -171,6 +171,9 @@ Template.training_image_game.onCreated(function () {
 
 	this.roundNum = new ReactiveVar(1);
 	this.taskNum = new ReactiveVar(Math.floor(Math.random()*tasks.count()));
+
+	var task = tasks.fetch()[this.taskNum.get()];
+	currentAnswer = task.answer;
 });
 
 Template.training_image_game.helpers({
@@ -210,7 +213,19 @@ Template.training_image_game.events={
 		event.preventDefault();
 
 		template.roundNum.set(template.roundNum.get()+1);
-		template.taskNum.set(Math.floor(Math.random()*tasks.count()));
+		var answer;
+		if(currentAnswer) {
+			do {
+				template.taskNum.set(Math.floor(Math.random()*tasks.count()));
+				answer = tasks.fetch()[template.taskNum.get()].answer;
+			} while(answer);
+		} else {
+			do {
+				template.taskNum.set(Math.floor(Math.random()*tasks.count()));
+				answer = tasks.fetch()[template.taskNum.get()].answer;
+			} while(!answer);
+		}
+		currentAnswer = answer;
 
 		pressedNext();
 		updateTable();

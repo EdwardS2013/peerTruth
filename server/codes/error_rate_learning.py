@@ -202,8 +202,8 @@ def write_image_pays():
             refs = line.rstrip().strip('[]').split(', ')[2:]
             for i in range(20):
                 ref_ans = refs[np.random.randint(0, len(refs))]
-                pays_0.append(payment(0,int(ref_ans), cp0_err, cp1_err, 0.6))
-                pays_1.append(payment(1,int(ref_ans), cp0_err, cp1_err, 0.6))
+                pays_0.append(payment(0,int(ref_ans), cp0_err, cp1_err, 0.7))
+                pays_1.append(payment(1,int(ref_ans), cp0_err, cp1_err, 0.7))
             pay_0 = np.mean(pays_0)
             pay_1 = np.mean(pays_1)
             f.write(line.rstrip().strip(']')+', '+str(pay_0)+', '+str(pay_1)+']\n')
@@ -232,4 +232,4 @@ def write_image_pays_pts():
 
     f.close()
 
-write_candy_pays()
+write_image_pays_pts()
