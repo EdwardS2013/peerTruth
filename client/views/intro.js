@@ -33,8 +33,6 @@ Template.intro.events={
 											trainingImageRounds: [],
 											dataCandyRound: [],
 											dataImageRound: []});
-			Router.go('real_image_game');
-/*
 			var taskType = Math.floor(Math.random() * (TASK_MAX - TASK_MIN + 1) ) + TASK_MIN;
 			var worker = Workers.findOne({"workerId": worker_Id});
 			if(taskType == 0) {
@@ -46,7 +44,7 @@ Template.intro.events={
 			} else {
 				Workers.update({_id: worker._id}, {$set: {"taskType": taskType}});
 				Router.go('/bonus_pts');
-			}*/
+			}
 		}
 	}
 };
