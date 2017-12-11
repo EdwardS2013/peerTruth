@@ -42,7 +42,7 @@ Template.welcome.events={
 			}
 			else
 			{
-				Router.go('/candy_explanation');
+				Router.go('/tutorial_explanation');
 			}
 		}
 	}

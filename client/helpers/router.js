@@ -80,6 +80,11 @@ Router.route('/payment', function(){
 		this.render('payment');
   });
 
+Router.route('/tutorial_explanation', function(){
+		this.layout('MainLayout');
+		this.render('tutorial_explanation');
+  });
+
 Router.route('/training_candy_game', function() {
   this.layout('MainLayout');
   this.render('training_candy_game');

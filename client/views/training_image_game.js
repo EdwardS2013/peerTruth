@@ -8,6 +8,7 @@ var tasks, imageData, imageDataPTS, errorRates, worker, taskType, currentAns;
 const P0_VAL = 0.7;
 const NUM_REFS = 1;
 const ROUND_TOTAL = 5;
+const SCALE = 3;
 
 function pressedAnswer() {
 	var btns = document.getElementById('answerArea');
@@ -91,9 +92,9 @@ function updateTable() {
 			}
 		}
 
-		cellAvg.innerHTML = round.payAvg.toFixed(2) + " pts";
-		cellSame.innerHTML = round.paySame.toFixed(2) + " pts";
-		cellDiff.innerHTML = round.payDiff.toFixed(2) + " pts";
+		cellAvg.innerHTML = (SCALE*round.payAvg).toFixed(2) + " pts";
+		cellSame.innerHTML = (SCALE*round.paySame).toFixed(2) + " pts";
+		cellDiff.innerHTML = (SCALE*round.payDiff).toFixed(2) + " pts";
 
     roundNum += 1;
 	});

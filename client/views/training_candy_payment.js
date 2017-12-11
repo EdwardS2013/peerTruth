@@ -6,6 +6,7 @@ Meteor.subscribe('errorRates');
 var candyData, candyDataPTS, errorRates, worker, taskType;
 const NUM_REFS = 1;
 const ROUND_TOTAL = 5;
+const SCALE = 3;
 
 function getBonus(candyClaim) {
   var btns = document.getElementById('answerArea');
@@ -152,11 +153,11 @@ Template.training_candy_payment.rendered=function(){
   			}
   		}
 
-      cellAvg.innerHTML = round.payAvg.toFixed(2) + " pts";
-      cellTruth.innerHTML = round.payTruth.toFixed(2) + " pts";
-      cellLie.innerHTML = round.payLie.toFixed(2) + " pts";
-      cellGM.innerHTML = round.payGM.toFixed(2) + " pts";
-      cellMM.innerHTML = round.payMM.toFixed(2) + " pts";
+      cellAvg.innerHTML = (SCALE*round.payAvg).toFixed(2) + " pts";
+      cellTruth.innerHTML = (SCALE*round.payTruth).toFixed(2) + " pts";
+      cellLie.innerHTML = (SCALE*round.payLie).toFixed(2) + " pts";
+      cellGM.innerHTML = (SCALE*round.payGM).toFixed(2) + " pts";
+      cellMM.innerHTML = (SCALE*round.payMM).toFixed(2) + " pts";
 
       roundNum += 1;
     }
