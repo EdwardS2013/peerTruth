@@ -27,7 +27,7 @@ function getBonus(candyClaim) {
     //PTS mechanism
     report = candyDataPTS.fetch()[last.taskNum];
   }
-  console.log(report);
+
   var pay_0 = parseFloat(report.pay_0);
   var pay_1 = parseFloat(report.pay_1);
   //p0 = 0 = mm, p1 = 1 = gummy
@@ -78,8 +78,6 @@ function getBonus(candyClaim) {
     references.push(parseInt(report.reports[Math.floor(Math.random()*report.reports.length)]));
 	}
 
-  console.log(references);
-
   var rn = worker.trainingCandyRounds.length + 1;
   if(rn <= ROUND_TOTAL) {
     document.getElementById('welcome-btn').style.visibility = "visible";
@@ -110,7 +108,6 @@ Template.training_candy_payment.onCreated(function () {
 
 	worker = Workers.findOne({"workerId": worker_Id});
   taskType = worker.taskType;
-  console.log(taskType);
 });
 
 Template.training_candy_payment.rendered=function(){
@@ -154,7 +151,6 @@ Template.training_candy_payment.rendered=function(){
   				cellOtherClaims.innerHTML += "<img src=\"/images/mm.png\" id=\"history-image\">";
   			}
   		}
-      console.log(typeof(round.payAvg));
 
       cellAvg.innerHTML = round.payAvg.toFixed(2) + " pts";
       cellTruth.innerHTML = round.payTruth.toFixed(2) + " pts";

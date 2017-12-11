@@ -677,4 +677,6 @@ table,th,td
 	padding:3px;
 	text-align: center;
 	color: #000;
+  word-wrap: break-word;         /* All browsers since IE 5.5+ */
+  overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
 }

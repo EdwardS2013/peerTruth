@@ -105,7 +105,6 @@ function addAnswer(answer) {
 	var references = [];
 
 	var imageTr = worker.trainingImageRounds;
-	console.log(imageTr);
 
 	var report;
 	if(taskType == 0) {
