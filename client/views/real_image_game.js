@@ -64,9 +64,6 @@ Template.real_image_game.created=function(){
 	tasks = RealTasks.find();
 	workerCount = Workers.find().count();
 
-	console.log(workerCount);
-	console.log((10*Math.floor((workerCount-1)/3))%100);
-
 	this.roundNum = new ReactiveVar(1);
 	this.taskNum = new ReactiveVar((10*Math.floor((workerCount-1)/3))%100);
 };
