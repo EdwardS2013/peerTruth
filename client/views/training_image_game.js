@@ -7,7 +7,7 @@ Meteor.subscribe('errorRates');
 var tasks, imageData, imageDataPTS, errorRates, worker, taskType, currentAns;
 const P0_VAL = 0.7;
 const NUM_REFS = 1;
-const ROUND_TOTAL = 5;
+const ROUND_TOTAL = 8;
 const SCALE = 3;
 
 function pressedAnswer() {
@@ -16,7 +16,7 @@ function pressedAnswer() {
     btns.removeChild(btns.lastChild);
   }
 
-  if(Template.instance().roundNum.get() <= 4) {
+  if(Template.instance().roundNum.get() <= (ROUND_TOTAL-1)) {
     document.getElementById('welcome-btn').style.visibility = "visible";
   } else {
     document.getElementById('next-btn').style.visibility = "visible";
@@ -204,17 +204,19 @@ Template.training_image_game.events={
 	'click #submit-yes': function(event, template){
 		pressedAnswer();
 		addAnswer(1);
+		updateTable();
 	},
 	'click #submit-no': function(event, template){
 		pressedAnswer();
 		addAnswer(0);
+		updateTable();
 	},
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
 
 		template.roundNum.set(template.roundNum.get()+1);
 		var answer;
-		if(currentAnswer) {
+		if(currentAnswer) { //alternate 0/1
 			do {
 				template.taskNum.set(Math.floor(Math.random()*tasks.count()));
 				answer = tasks.fetch()[template.taskNum.get()].answer;
@@ -228,7 +230,6 @@ Template.training_image_game.events={
 		currentAnswer = answer;
 
 		pressedNext();
-		updateTable();
 	},
 	'click #next-btn': function(event, template){
     event.preventDefault();

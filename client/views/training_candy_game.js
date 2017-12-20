@@ -2,7 +2,7 @@ Meteor.subscribe('workers');
 Meteor.subscribe('candyTestData');
 
 var candyData;
-const ROUND_TOTAL = 5;
+const ROUND_TOTAL = 8;
 
 Template.training_candy_game.helpers({
 	//not using reactivevar as template is recreated every time

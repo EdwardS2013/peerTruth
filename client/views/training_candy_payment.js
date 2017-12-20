@@ -5,7 +5,7 @@ Meteor.subscribe('errorRates');
 
 var candyData, candyDataPTS, errorRates, worker, taskType;
 const NUM_REFS = 1;
-const ROUND_TOTAL = 5;
+const ROUND_TOTAL = 8;
 const SCALE = 3;
 
 function getBonus(candyClaim) {
@@ -102,24 +102,17 @@ function getBonus(candyClaim) {
   Workers.update({_id: worker._id}, {$set: {"trainingCandyRounds": newTr}});
 }
 
-Template.training_candy_payment.onCreated(function () {
-	candyData = CandyTestData.find();
-  candyDataPTS = CandyTestDataPTS.find();
-	errorRates = ErrorRates.find().fetch()[0].candy_errs;
-
-	worker = Workers.findOne({"workerId": worker_Id});
-  taskType = worker.taskType;
-});
-
-Template.training_candy_payment.rendered=function(){
-  $('html,body').scrollTop(0);
+function updateTable() {
+  var table = document.getElementById("history-table");
+	while(table.rows.length > 1) {
+		table.deleteRow(-1);
+	}
 
   var tr = worker.trainingCandyRounds;
   var roundNum = 1;
   tr.forEach(function(round) {
     //not an in-progress round
     if(round.bonus != null) {
-      var otherClaims = [1, 0];
       var row = document.getElementById("history-table").insertRow(-1);
 
       var cellRound = row.insertCell(0);
@@ -158,18 +151,33 @@ Template.training_candy_payment.rendered=function(){
       cellLie.innerHTML = (SCALE*round.payLie).toFixed(2) + " pts";
       cellGM.innerHTML = (SCALE*round.payGM).toFixed(2) + " pts";
       cellMM.innerHTML = (SCALE*round.payMM).toFixed(2) + " pts";
-
-      roundNum += 1;
     }
+    roundNum += 1;
   });
+}
+
+Template.training_candy_payment.onCreated(function () {
+	candyData = CandyTestData.find();
+  candyDataPTS = CandyTestDataPTS.find();
+	errorRates = ErrorRates.find().fetch()[0].candy_errs;
+
+	worker = Workers.findOne({"workerId": worker_Id});
+  taskType = worker.taskType;
+});
+
+Template.training_candy_payment.rendered=function(){
+  $('html,body').scrollTop(0);
+  updateTable();
 };
 
 Template.training_candy_payment.events={
   'click #submit-mm': function(event, template){
     getBonus(0);
+    updateTable();
   },
   'click #submit-gm': function(event, template){
     getBonus(1);
+    updateTable();
   },
   'click #welcome-btn': function(event, template){
     event.preventDefault();

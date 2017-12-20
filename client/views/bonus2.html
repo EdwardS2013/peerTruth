@@ -1,6 +1,6 @@
 <template name="bonus2">
 	<div id="welcome-instruction" class="instruction">
-		<p>Suppose when we know the true answer, you will get <span style="color:red">5c</span> bonus whenever your answer is correct. Now we don’t know the ground-truth answer. Suppose your answer for a particular question is “Yes”. Your matched peer’s answer happens to be “Yes”. We know roughly among all tasks, the fraction of true answer being “Yes” has 30% chance. And we know your peer’s answer has 30% chance of making a mistake (reporting “No”) when the true answer is “Yes”, and 20% when the ground-truth is “No”. Then we will compute your bonus accordingly to the following:</p>
+		<p>When we know the true answer, we would like to reward you <span style="color:red">5c</span> bonus whenever your answer is correct. Now we don’t know the ground-truth answer. Suppose your answer for a particular question is “Yes”. Your matched peer’s answer happens to be “Yes”. We know roughly among all tasks, the fraction of true answer being “Yes” has 30% chance. And we know your peer’s answer has 30% chance of making a mistake (reporting “No”) when the true answer is “Yes”, and 20% when the ground-truth is “No”. Then we will compute your bonus accordingly to the following:</p>
 		<br>
 		<p>1*1/30% * (1-20%)/(1-20%-30%)*5c ~ 25c!</p>
 		<br>
