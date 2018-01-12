@@ -10,6 +10,11 @@ Template.bonus.rendered = function(){
 Template.bonus.events={
 	'click #next-btn': function(event, template){
 		event.preventDefault();
+
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
 		if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
 		{
 			Router.go('/game');

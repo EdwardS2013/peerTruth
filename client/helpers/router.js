@@ -4,6 +4,7 @@ hit_Id = '';
 urls = '';
 startTime = '';
 endTime = '';
+time = [];
 
 gup = function(path, name){
     var regexS = "[\\?&]"+name+"=([^&#]*)";

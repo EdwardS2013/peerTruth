@@ -28,13 +28,18 @@ Template.intro.events={
 											assignmentId: assignment_Id,
 											hitId: hit_Id,
 											group: urls,
-											time: today.toString(),
 											trainingCandyRounds: [],
 											trainingImageRounds: [],
 											dataCandyRound: [],
-											dataImageRound: []});
+											dataImageRound: [],
+											taskType: -1});
 			var taskType = Math.floor(Math.random() * (TASK_MAX - TASK_MIN + 1) ) + TASK_MIN;
 			var worker = Workers.findOne({"workerId": worker_Id});
+
+			time.push(today.toString());
+			console.log(time);
+			Router.go('/bonus');
+
 			if(taskType == 0) {
 				Workers.update({_id: worker._id}, {$set: {"taskType": taskType}});
 				Router.go('/bonus');

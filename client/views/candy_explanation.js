@@ -10,6 +10,11 @@ Template.candy_explanation.rendered = function(){
 Template.candy_explanation.events={
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
+
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
 		if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
 		{
 			Router.go('/game');

@@ -57,12 +57,22 @@ Template.real_candy_payment.events={
   'click #submit-gm': function(event, template){
     getBonus(0);
   },
-  'click #welcome-btn': function(event, template){
+  'click #welcome-btn': function(event, template){ //new round
     event.preventDefault();
+
+    var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
     Router.go('real_candy_game');
   },
-  'click #next-btn': function(event, template){
+  'click #next-btn': function(event, template){ //move onto next phase
     event.preventDefault();
+
+    var today = new Date();
+    time.push(today.toString());
+    console.log(time);
+
     Router.go('real_image_game');
   }
 };

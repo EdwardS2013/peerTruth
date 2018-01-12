@@ -63,12 +63,9 @@ Template.real_candy_game.events={
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
 
-		endTime = new Date();
-		var duration = (endTime - startTime) / 1000;
-
-		var count = 0;
-		var locationTemp = "NA";
-		var location = locationTemp.replace(/\n/g, "; ");
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
 
 		Router.go('real_candy_payment');
 	}

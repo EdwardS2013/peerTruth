@@ -76,7 +76,7 @@ def error_rate(P0,filename):
 
 #inputs for computing payment: answer, reference answer(randomly selected), error rates p0,p1, priors P0,
 
-#this implements the 1/prior scoring function
+#this implements our mechanism
 def payment(ans,ref_ans,p0_est,p1_est,P0):
 
 	P1 = 1-P0
@@ -87,11 +87,11 @@ def payment(ans,ref_ans,p0_est,p1_est,P0):
 			if ref_ans == 0:
 				pay = (1-p1_est)/(P0*(1-p0_est-p1_est))
 			else:
-				pay = -1*p0_est/(P0*(1-p0_est-p1_est))
+				pay = -1*p1_est/(P0*(1-p0_est-p1_est))
 
 		else:
 			if ref_ans == 0:
-				pay = -1*p1_est/(P1*(1-p0_est-p1_est))
+				pay = -1*p0_est/(P1*(1-p0_est-p1_est))
 			else:
 				pay = (1-p0_est)/(P1*(1-p0_est-p1_est))
 
@@ -102,8 +102,8 @@ def payment(ans,ref_ans,p0_est,p1_est,P0):
 	pay = pay - bias
 	return pay
 
+#this implements the 1/prior mechanism
 def payment_PTS(ans,refs,ref_ans):
-    #implementing peer truth serum
     k = len(refs)
     #the first ref answer is to compare, the rest is to compute the priors
     refs = np.array(refs)
@@ -125,6 +125,7 @@ def payment_PTS(ans,refs,ref_ans):
     pay = 10*pay/scale
     return pay
 
+#write output for our mechanism
 def write_candy_pays():
     a = []
     with open('candy_test_data.csv', 'r') as f:
@@ -155,6 +156,7 @@ def write_candy_pays():
 
     f.close()
 
+#write output for 1/prior mechanism
 def write_candy_pays_pts():
     a = []
     with open('candy_test_data_pts.csv', 'r') as f:
@@ -179,7 +181,7 @@ def write_candy_pays_pts():
 
     f.close()
 
-
+#write image task output for our mechanism
 def write_image_pays():
     a = []
     with open('image_test_data.csv', 'r') as f:
@@ -210,6 +212,7 @@ def write_image_pays():
 
     f.close()
 
+#write image task output for 1/prior mechanism
 def write_image_pays_pts():
     a = []
     with open('image_test_data_pts.csv', 'r') as f:
@@ -232,4 +235,4 @@ def write_image_pays_pts():
 
     f.close()
 
-write_image_pays_pts()
+write_image_pays()

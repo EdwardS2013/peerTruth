@@ -214,6 +214,10 @@ Template.training_image_game.events={
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
 
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
 		template.roundNum.set(template.roundNum.get()+1);
 		var answer;
 		if(currentAnswer) { //alternate 0/1
@@ -233,6 +237,11 @@ Template.training_image_game.events={
 	},
 	'click #next-btn': function(event, template){
     event.preventDefault();
+
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
     Router.go('training_to_real');
   }
 };

@@ -104,12 +104,21 @@ Template.real_image_game.events={
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
 
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
 		template.roundNum.set(template.roundNum.get()+1);
 		template.taskNum.set(template.taskNum.get()+1);
 		pressedNext();
 	},
 	'click #next-btn': function(event, template){
     event.preventDefault();
+
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
     Router.go('end');
   }
 };

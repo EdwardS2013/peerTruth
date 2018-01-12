@@ -10,6 +10,11 @@ Template.bonus_pts.rendered = function(){
 Template.bonus_pts.events={
 	'click #welcome-btn': function(event, template){
 		event.preventDefault();
+
+		var today = new Date();
+		time.push(today.toString());
+		console.log(time);
+
 		if (assignment_Id == "ASSIGNMENT_ID_NOT_AVAILABLE")
 		{
 			Router.go('/game');
