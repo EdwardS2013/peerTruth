@@ -14,16 +14,16 @@ function getBonus(candyClaim) {
   var mmPay = 1;
   var gmPay = 0.35;
   if(candyClaim) {
-    //claimed mm
+    //claimed gm
     payment = mmPay;
     altPayment = gmPay;
-    altChoice = 'Gummy Bear';
+    altChoice = 'M&M';
     errorRate = 0.1;
   } else {
-    //claimed gm
+    //claimed mm
     payment = gmPay;
     altPayment = mmPay;
-    altChoice = 'M&M';
+    altChoice = 'Gummy Bear';
     errorRate = 0.1;
   }
 
@@ -52,10 +52,10 @@ Template.real_candy_payment.rendered=function(){
 
 Template.real_candy_payment.events={
   'click #submit-mm': function(event, template){
-    getBonus(1);
+    getBonus(0);
   },
   'click #submit-gm': function(event, template){
-    getBonus(0);
+    getBonus(1);
   },
   'click #welcome-btn': function(event, template){ //new round
     event.preventDefault();
